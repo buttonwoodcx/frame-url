@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Frame URL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+  <table>
+    <tbody>
+      <tr>
+        <td>App hash:</td>
+        <td><input style="width: 30rem;" type="text" data-bind="value: hash, valueUpdate: 'input'"><br></td>
+      </tr>
+      <tr>
+        <td>App path:</td>
+        <td><input style="width: 30rem;" type="text" data-bind="value: path, valueUpdate: 'input'"><br></td>
+      </tr>
+      <tr>
+        <td>Frame account:</td>
+        <td><input style="width: 30rem;" type="text" data-bind="value: account, valueUpdate: 'input'"><br></td>
+      </tr>
+      <tr>
+        <td>Site:</td>
+        <td>
+          <select data-bind="value: site">
+            <option value="exchange">exchange</option>
+            <option value="exchange-test">exchange-test</option>
+            <option value="exchange-uat">exchange-uat</option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h2>Frame URL:</h2>
+  <p id="url" style="font-family: monospace;" data-bind="text: url"></p>
+  <button class="btn" data-clipboard-target="#url">Copy It</button><span id="message" style="color:green"></span>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script>
+var vm = function() {
+  this.hash = ko.observable('OjeNzJ0G');
+  this.path = ko.observable('C:\\windows\\system32\\notepad.exe');
+  this.account = ko.observable('infront-azuread');
+  this.site = ko.observable('exchange');
+  this.url = ko.pureComputed(function() {
+    return 'https://img.mainframe2.com/login?account_type=' +
+      encodeURIComponent(this.account()) +
+      '&return_url=https://' + this.site() + '.bcx.buttonwood.net/frame' +
+      encodeURIComponent('?a=' + encodeURIComponent(JSON.stringify({hash: this.hash(), path: this.path()})));
+  }, this);
+};
+ko.applyBindings(new vm());
+var clipboard =new ClipboardJS('.btn');
+clipboard.on('success', function(e) {
+  document.querySelector('#message').textContent = 'Copied!';
+  setTimeout(function() {
+    document.querySelector('#message').textContent = '';
+  }, 500);
+});
+</script>
+</body>
+</html>
