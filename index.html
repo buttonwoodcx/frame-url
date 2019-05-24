@@ -46,8 +46,10 @@ var vm = function() {
   this.url = ko.pureComputed(function() {
     return 'https://img.mainframe2.com/login?account_type=' +
       encodeURIComponent(this.account()) +
-      '&return_url=https://' + this.site() + '.bcx.buttonwood.net/frame' +
-      encodeURIComponent('?a=' + encodeURIComponent(btoa(this.hash() + ' ' + this.path())));
+      '&return_url=' +
+      encodeURIComponent('https://' + this.site() + '.bcx.buttonwood.net/frame?a=' +
+        encodeURIComponent(btoa(this.hash() + ' ' + this.path()))
+      );
   }, this);
 };
 ko.applyBindings(new vm());
